@@ -14,6 +14,7 @@ class StoryViewSet(viewsets.ModelViewSet):
     """
     queryset = Story.objects.all()
     serializer_class = StorySerializer
+    filter_fields = ("id",)
 
 class PageNodeViewSet(viewsets.ModelViewSet):
     """
@@ -21,6 +22,7 @@ class PageNodeViewSet(viewsets.ModelViewSet):
     """
     queryset = PageNode.objects.all()
     serializer_class = PageNodeSerializer
+    filter_fields = ("id",)
 
 class ElementNodeViewSet(viewsets.ModelViewSet):
     """

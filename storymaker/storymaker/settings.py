@@ -69,6 +69,7 @@ INSTALLED_APPS = (
 
     # 3rd party
     'rest_framework',
+    'gunicorn',
 )
 
 MIDDLEWARE_CLASSES = (
