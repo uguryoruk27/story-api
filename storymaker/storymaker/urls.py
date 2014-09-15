@@ -26,6 +26,8 @@ urlpatterns = patterns('',
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
     # custom views
+    url(r'^accounts/', include('apps.profiles.urls')),
+    url(r'^story/', include('apps.stories.urls')),
 
     # static pages
     url(r'^$', TemplateView.as_view(template_name="index.html"), name="index"),

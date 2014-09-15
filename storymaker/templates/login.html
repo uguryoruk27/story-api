@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block Content %}
+<div id="lrform">
+    <form action="." method="POST">{% csrf_token %}
+        
+        {% if form.errors %}
+        <p>{{ form.errors }}</p>
+        {% endif %}
+
+        <input type="text" name="{{ form.username.name }}" id="id_{{ f.username.name }}" class="form-control">
+        <input type="password" name="{{ form.password.name }}" id="id_{{ f.password.name }}" class="form-control">
+
+        <input type="submit" value="login" class="btn btn-block btn-lg btn-success" />
+    </form>
+</div>
+{% endblock %}

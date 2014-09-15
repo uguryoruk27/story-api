@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+
+{% block Content %}
+
+	{{ object.title }} - written by {{ object.owner }}
+
+	<div>Sayfalar</div>
+
+	<div>
+
+		{% for page in object.pages.all %}
+
+			<div><a href="{% url 'edit_page' page.id %}">{{ page.title }}</a></div>
+
+		{% endfor %}
+
+	</div>
+
+{% endblock %}

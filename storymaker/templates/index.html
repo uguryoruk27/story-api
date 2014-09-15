@@ -1,13 +1,25 @@
-<html>
-<head>
-	<title>StoryMaker</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% load profile_tags %}
 
-<ul>
-	<li><a href="/api/1.0/">API 1.0</a></li>
-	<li><a href="/docs/">API docs</a></li>
-</ul>
+{% block Content %}
 
-</body>
-</html>
+	Hikaye API
+
+	<div><h4>Hikayelerin</h4></div>
+	<div>
+
+		{% user_stories user as stories %}
+
+		{% for story in stories %}
+
+			<div class="story-preview"><a href="{% url 'story_details' story.id %}">{{ story.title }}</a></div>
+
+		{% endfor %}
+
+		<div class="story-preview"><a href="{% url 'create_story' %}">Yeni Hikaye Oluştur</a></div>
+
+
+	</div>
+
+{% endblock %}
+

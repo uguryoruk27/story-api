@@ -66,11 +66,14 @@ INSTALLED_APPS = (
     # custom
     'apps.stories',
     'apps.api',
+    'apps.profiles',
 
     # 3rd party
     'rest_framework',
     'gunicorn',
 )
+
+AUTH_USER_MODEL = "profiles.Profile"
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',

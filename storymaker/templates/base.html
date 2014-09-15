@@ -1,0 +1,34 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="/static/css/flat-ui.css">
+<script type="text/javascript" href="/static/jquery-2.1.0.min.js" />
+
+<script type="text/javascript"></script>
+
+</head>
+
+{% block Menu %}
+
+	<ul>
+		<li><a href="{% url 'index' %}">Homepage</a></li>
+		<li><a href="/api/1.0/">API 1.0</a></li>
+		<li><a href="/docs/">API docs</a></li>
+		{% if user.is_authenticated %}
+		<li><a href="{% url 'update_profile' %}">Update Profile!</a></li>
+		<li><a href="{% url 'logout' %}">Logout</a></li>
+		{% else %}
+		<li><a href="{% url 'register' %}">Register</a></li>
+		<li><a href="{% url 'login' %}">Login</a></li>
+		{% endif %}
+	</ul>
+
+{% endblock %}
+
+{% block Content %}
+
+
+
+{% endblock %}
+
+
+</html>

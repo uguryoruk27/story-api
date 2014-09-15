@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block Content %}
+<div>
+	<form method="post" action="." class="register">{% csrf_token %}
+
+		<div>{{ form.username.label }}</div>
+		<div>
+	    	<input type="text" name="{{ form.username.name }}" id="id_{{ f.username.name }}" class="form-control">
+	    </div>
+
+	    <div>{{ form.email.label }}</div>
+	    <div>
+	    	<input type="text" name="{{ form.email.name }}" id="id_{{ f.email.name }}" class="form-control">
+	    </div>
+
+	    <div>{{ form.password1.label }}</div>
+	    <div>
+	    	<input type="password" name="{{ form.password1.name }}" id="id_{{ f.password1.name }}" class="form-control">
+	    </div>
+
+	    <div>{{ form.password2.label }}</div>
+	    <div>
+	    	<input type="password" name="{{ form.password2.name }}" id="id_{{ f.password2.name }}" class="form-control">
+	    </div>
+	    <div>
+			<input type="submit" value="Submit" class="btn btn-block btn-lg btn-success" />
+		</div>
+	</form>
+</div>
+{% endblock %}

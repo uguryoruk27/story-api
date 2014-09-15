@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from rest_framework.reverse import reverse
@@ -8,6 +9,7 @@ class Story(models.Model):
 		Contains story details
 	"""
 	title = models.CharField(_("Title"), max_length=120)
+	owner = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("Creater"), related_name="stories", null=True, blank=True)
 
 	def __unicode__(self):
 		return "%s" % (self.title)

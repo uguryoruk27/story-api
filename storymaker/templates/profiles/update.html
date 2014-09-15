@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+
+{% block Content %}
+
+
+<div>{{ object }} >> Update your profile info</div>
+
+<div>
+
+	<form action="." method="post" enctype="multipart/form-data">{% csrf_token %}
+
+		<div>{{ form.email.label }}</div>
+		<div>{{ form.email }}</div>
+
+		<div>{{ form.birthdate.label}}</div>
+		<div>{{ form.birthdate }}</div>
+
+		<div>{{ form.bio.label }}</div>
+		<div>{{ form.bio }}</div>
+
+		<div>{{ form.picture.label }}</div>
+		<div>{{ form.picture }}</div>
+		<img src="/uploads/{{ object.picture }}" width="200" />
+
+		<div>{{ form.phone_number.label }}</div>
+		<div>{{ form.phone_number }}</div>
+
+		<input type="submit" value="Update!" />
+
+	</form>
+
+</div>
+
+
+{% endblock Content %}

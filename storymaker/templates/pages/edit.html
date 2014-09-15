@@ -1,0 +1,151 @@
+<html>
+<head>
+<title></title>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+
+<script>
+$(document).ready(function(){
+
+	var imageElement = '<input type="file" value="Upload an image" />';
+	var textElement = '<textarea>Text</textarea>';
+    
+	var startTextElement = '<li class="custom_element" id="formitem-text">';
+	var startImageElement = '<li class="custom_element" id="formitem-image">';
+
+	var endElement = '<span class="remove_element"></li>';
+
+	// add new element
+	$(".addText").click(function(){
+  		$(".user_defined_fields").append(startTextElement+textElement+endElement);
+  		$(".user_defined_fields").sortable();
+	});
+
+	$(".addImage").click(function(){
+  		$(".user_defined_fields").append(startImageElement+imageElement+endElement);
+  		$(".user_defined_fields").sortable();
+	});
+
+	// remove an element
+	$(".remove_element").click(function(){
+
+	});
+
+	function makeDraggable(name){
+		$(name).draggable();
+	}
+
+	function makeSortable(name){
+		$(name).sortable();
+	}
+
+	// prepare form
+	$(".submitting").click(function(){
+		$(".user_defined_fields li").each(function(index){
+			var li_id = $(this).attr("id");
+			var name_val = li_id + "-" + (++index);
+
+			var item_to_find;
+
+			if (li_id == "formitem-text"){
+				item_to_find = "textarea";
+			} else if (li_id == "formitem-image"){
+				item_to_find = "input";
+			};
+
+			$(this).find(item_to_find).attr("name", name_val);
+		});
+	});
+
+});
+
+</script>
+
+<style type="text/css">
+
+* {margin: 0; padding: 0;}
+
+.editable {width: 900px; margin: 0 auto;}
+
+.user_defined_fields {list-style: none;}
+
+.methods {padding: 5px 0; text-align: left;}
+.methods li {list-style: none; display: inline;}
+.methods li a {color: #fff; background: #000; padding: 5px 12px; text-decoration: none;}
+
+.custom_element {padding: 5px 0;}
+
+.submit_button {margin: 10px 0;}
+
+
+.nav{padding: 20px 0; width: 100%;}
+
+
+.nav_top {margin: 10px 0;}
+
+</style>
+
+
+</head>
+<body>
+
+<div class="editable">
+
+	<div class="editable_left">
+
+		<div class="nav">
+
+			<div class="nav_top">
+
+				<h3>Editing Page</h3>
+
+			</div>
+
+			<div class="nav_bottom">
+				<ul class="methods">
+					<li><a href="#" class="addText">Text</a></li>
+					<li><a href="#" class="addImage">Image</a></li>
+				</ul>
+			</div>
+
+		</div>
+
+		<form action="" method="POST">{% csrf_token %}
+
+			<!-- START default editable fields -->
+			<textarea cols="70">Page Title</textarea>
+			<!-- END default editable fields -->
+
+			<!-- START user defined editable fields -->
+			<div class="testing">
+
+				<ul class="user_defined_fields">
+
+					{% for element in page.elements.all %}
+						{% if element.type == "text" %}
+							<li class="custom_element" id="formitem-text"><textarea>{{ element.content }}</textarea><span class="remove_element"></li>
+						{% else %}
+							<li class="custom_element" id="formitem-text"><input type="file" /><span class="remove_element"></li>
+						{% endif %}
+					{% endfor %}
+
+				</ul>
+
+			</div>
+			<!-- END user defined editable fields -->
+
+			<span class="submitting">POST TEST</span>
+
+			<input type="submit" value="Save Page" class="submit_button" />
+
+		</form>
+
+	</div>
+
+</div>
+
+
+
+</body>
+</html>
