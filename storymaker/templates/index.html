@@ -3,16 +3,21 @@
 
 {% block Content %}
 
-	Hikaye API
 
-	<div><h4>Hikayelerin</h4></div>
-	<div>
+	<div class="title">Hikayeleriniz</div>
+
+	<div class="content story-list">
 
 		{% user_stories user as stories %}
 
 		{% for story in stories %}
 
-			<div class="story-preview"><a href="{% url 'story_details' story.id %}">{{ story.title }}</a></div>
+			<div class="story-preview">
+				<a href="{% url 'story_details' story.id %}">
+					<img src="/uploads/{{ story.image }}">
+					<div>{{ story.title }}</div>
+				</a>
+			</div>
 
 		{% endfor %}
 

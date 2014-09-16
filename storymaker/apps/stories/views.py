@@ -89,7 +89,7 @@ def edit_page(request, pk, template="pages/edit.html"):
                     e.ordering = int(item_order)
                     e.save()
                 else:
-                    element = get_element(item_id)
+                    element = get_element(item_id, page.id)
 
                     if element:
                         element.content = v
@@ -113,7 +113,7 @@ def edit_page(request, pk, template="pages/edit.html"):
                     e.save()
                     e.image.save(v.name, v)
                 else:
-                    e = get_element(item_id)
+                    e = get_element(item_id, page.id)
                     e.image.save(v.name, v)
                     e.ordering = item_order
                     e.save()
@@ -128,9 +128,9 @@ def edit_page(request, pk, template="pages/edit.html"):
 
 
 
-def get_element(id):
+def get_element(id, pagenode_id):
 
     try:
-        return ElementNode.objects.get(id=id)
+        return ElementNode.objects.get(id=id, pagenode_id=pagenode_id)
     except:
         return None

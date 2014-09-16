@@ -1,5 +1,6 @@
 <html>
 <head>
+<title></title>
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
@@ -69,82 +70,91 @@ $(document).ready(function(){
 
 * {margin: 0; padding: 0;}
 
-.navmenu {background: #000; padding: 0;}
-.navmenu ul {list-style: none; padding: 10px;}
-.navmenu ul li {display: inline; margin: 0;border-left: 1px solid #fff;}
-.navmenu ul li a {color: #fff; text-decoration: none; padding: 10px;  }
-.navmenu .first {border-left: none; }
-
-.all_content {width: 80%; margin: 30px auto;}
-
-.header {font-size: 25px; margin: 5px auto; text-align: center;}
-
-.title {font-size: 20px; text-align: left; border-bottom: 2px solid #eee; margin:10px 0 10px 0; padding-bottom: 10px;}
-.sub-title {margin: 10px 0;}
-.sub-title span {font-size: 20px; text-align: left; border-bottom: 2px solid #eee; padding: 0 10px 10px 0;}
-.content {font-size: 18px; margin: 10px 0 10px 0;}
-
-.story-preview {width: 250px; float: left; margin: 10px 20px 10px 0;}
-.story-preview img {width: 250px;}
-.story-preview div {text-align: center; margin: 0 auto; }
-
-.story-details {padding: 15px 0;}
-
-.page-preview {width: 200px; float: left; margin: 10px 20px 10px 0;}
-
-.story-list {width: 100%; overflow: auto;}
-
-
 .editable {width: 900px; margin: 0 auto;}
+
 .user_defined_fields {list-style: none;}
+
 .methods {padding: 5px 0; text-align: left;}
 .methods li {list-style: none; display: inline;}
 .methods li a {color: #fff; background: #000; padding: 5px 12px; text-decoration: none;}
+
 .custom_element {padding: 5px 0;}
+
 .submit_button {margin: 10px 0;}
+
+
 .nav{padding: 20px 0; width: 100%;}
+
+
 .nav_top {margin: 10px 0;}
-.custom_element textarea {width: 500px; height: 120px;}
 
 </style>
 
-<script type="text/javascript"></script>
 
 </head>
+<body>
 
-{% block Menu %}
+<div class="editable">
 
-<div class="navmenu">
+	<div class="editable_left">
 
-	<ul>
-		<li class="first"><a href="{% url 'index' %}">Homepage</a></li>
-		<li><a href="/api/1.0/">API 1.0</a></li>
-		<li><a href="/docs/">API docs</a></li>
-		{% if user.is_authenticated %}
-		<li><a href="{% url 'update_profile' %}">Profile</a></li>
-		<li><a href="{% url 'logout' %}">Logout</a></li>
-		{% else %}
-		<li><a href="{% url 'register' %}">Register</a></li>
-		<li><a href="{% url 'login' %}">Login</a></li>
-		{% endif %}
-	</ul>
+		<div class="nav">
+
+			<div class="nav_top">
+
+				<h3>Editing Page</h3>
+
+			</div>
+
+			<div class="nav_bottom">
+				<ul class="methods">
+					<li><a href="#" class="addText">Text</a></li>
+					<li><a href="#" class="addImage">Image</a></li>
+				</ul>
+			</div>
+
+		</div>
+
+		<form action="" method="POST" class="main-form" enctype="multipart/form-data">{% csrf_token %}
+
+			<!-- START default editable fields -->
+			<textarea cols="70">{{ page.title }}</textarea>
+			<!-- END default editable fields -->
+
+			<!-- START user defined editable fields -->
+			<div class="testing">
+
+				<ul class="user_defined_fields">
+
+					{% for element in page.elements.all %}
+						{% if element.type == "text" %}
+							<li class="custom_element" id="formitem-text-{{ element.id }}">
+								<textarea>{{ element.content }}</textarea>
+								<span class="remove_element">
+							</li>
+						{% else %}
+							<li class="custom_element" id="formitem-image-{{ element.id }}">
+								<input type="file" />
+								<img src="/uploads/{{ element.image }}">
+								<span class="remove_element">
+							</li>
+						{% endif %}
+					{% endfor %}
+
+				</ul>
+
+			</div>
+			<!-- END user defined editable fields -->
+
+			<span class="submitting">SAVE</span>
+
+		</form>
+
+	</div>
 
 </div>
 
-{% endblock %}
 
 
-<div class="all_content">
-
-	<div class="header">Hikaye API</div>
-
-	{% block Content %}
-
-
-
-	{% endblock %}
-
-</div>
-
-
+</body>
 </html>

@@ -1,98 +1,6 @@
-<html>
-<head>
-<title></title>
+{% extends "base.html" %}
 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
-
-<script>
-$(document).ready(function(){
-
-	var imageElement = '<input type="file" value="Upload an image" />';
-	var textElement = '<textarea>Text</textarea>';
-    
-	var startTextElement = '<li class="custom_element" id="formitem-text-0">';
-	var startImageElement = '<li class="custom_element" id="formitem-image-0">';
-
-	var endElement = '<span class="remove_element"></li>';
-
-	$(".user_defined_fields").sortable();
-
-	// add new element
-	$(".addText").click(function(){
-  		$(".user_defined_fields").append(startTextElement+textElement+endElement);
-  		$(".user_defined_fields").sortable();
-	});
-
-	$(".addImage").click(function(){
-  		$(".user_defined_fields").append(startImageElement+imageElement+endElement);
-  		$(".user_defined_fields").sortable();
-	});
-
-	// remove an element
-	$(".remove_element").click(function(){
-
-	});
-
-	function makeDraggable(name){
-		$(name).draggable();
-	}
-
-	function makeSortable(name){
-		$(name).sortable();
-	}
-
-	// prepare form
-	$(".submitting").click(function(){
-		$(".user_defined_fields li").each(function(index){
-			var li_id = $(this).attr("id");
-			var name_val = li_id + "-" + (++index);
-
-			var item_to_find;
-
-			if (li_id.search("text") != -1){
-				item_to_find = "textarea";
-			} else if (li_id.search("formitem-image") != -1){
-				item_to_find = "input";
-			};
-
-			$(this).find(item_to_find).attr("name", name_val);
-
-			$(".main-form").submit();
-		});
-	});
-
-});
-
-</script>
-
-<style type="text/css">
-
-* {margin: 0; padding: 0;}
-
-.editable {width: 900px; margin: 0 auto;}
-
-.user_defined_fields {list-style: none;}
-
-.methods {padding: 5px 0; text-align: left;}
-.methods li {list-style: none; display: inline;}
-.methods li a {color: #fff; background: #000; padding: 5px 12px; text-decoration: none;}
-
-.custom_element {padding: 5px 0;}
-
-.submit_button {margin: 10px 0;}
-
-
-.nav{padding: 20px 0; width: 100%;}
-
-
-.nav_top {margin: 10px 0;}
-
-</style>
-
-
-</head>
-<body>
+{% block Content %}
 
 <div class="editable">
 
@@ -100,16 +8,16 @@ $(document).ready(function(){
 
 		<div class="nav">
 
-			<div class="nav_top">
+			<div class="title">
 
-				<h3>Editing Page</h3>
+				<a href="{% url 'story_details' page.story.id %}">{{ page.story.title }}</a> > {{ page.title }}
 
 			</div>
 
 			<div class="nav_bottom">
 				<ul class="methods">
-					<li><a href="#" class="addText">Text</a></li>
-					<li><a href="#" class="addImage">Image</a></li>
+					<li><a href="#" class="addText">Yazı Ekle</a></li>
+					<li><a href="#" class="addImage">Resim Ekle</a></li>
 				</ul>
 			</div>
 
@@ -118,7 +26,7 @@ $(document).ready(function(){
 		<form action="" method="POST" class="main-form" enctype="multipart/form-data">{% csrf_token %}
 
 			<!-- START default editable fields -->
-			<textarea cols="70">Page Title</textarea>
+			<textarea cols="50">{{ page.title }}</textarea>
 			<!-- END default editable fields -->
 
 			<!-- START user defined editable fields -->
@@ -134,8 +42,7 @@ $(document).ready(function(){
 							</li>
 						{% else %}
 							<li class="custom_element" id="formitem-image-{{ element.id }}">
-								<input type="file" />
-								<img src="/uploads/{{ element.image }}">
+								<img src="/uploads/{{ element.image }}"><input type="file" class="custom-file-input" />
 								<span class="remove_element">
 							</li>
 						{% endif %}
@@ -155,6 +62,4 @@ $(document).ready(function(){
 </div>
 
 
-
-</body>
-</html>
+{% endblock %}

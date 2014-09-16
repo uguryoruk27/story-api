@@ -3,17 +3,25 @@
 
 {% block Content %}
 
-	{{ object.title }} - written by {{ object.owner }}
+	<div class="title">{{ object.title }}</div>
 
-	<div>Sayfalar</div>
+	<div class="content">
 
-	<div>
+		<div class="story-details">
+			Story details goes here....
+		</div>
 
-		{% for page in object.pages.all %}
+		<div class="sub-title"><span>Sayfalar</span></div>
 
-			<div><a href="{% url 'edit_page' page.id %}">{{ page.title }}</a></div>
+		<div class="page-list">
 
-		{% endfor %}
+			{% for page in object.pages.all %}
+
+				<div class="page-preview"><a href="{% url 'edit_page' page.id %}">{{ page.title }}</a></div>
+
+			{% endfor %}
+
+		</div>
 
 	</div>
 

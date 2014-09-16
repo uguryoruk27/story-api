@@ -10,6 +10,7 @@ class Story(models.Model):
 	"""
 	title = models.CharField(_("Title"), max_length=120)
 	owner = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("Creater"), related_name="stories", null=True, blank=True)
+	image = models.ImageField(_("Story Image"), upload_to="story/images/", null=True, blank=True)
 
 	def __unicode__(self):
 		return "%s" % (self.title)
