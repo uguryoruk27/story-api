@@ -115,7 +115,7 @@ $(document).ready(function(){
 
 		</div>
 
-		<form action="" method="POST" class="main-form">{% csrf_token %}
+		<form action="" method="POST" class="main-form" enctype="multipart/form-data">{% csrf_token %}
 
 			<!-- START default editable fields -->
 			<textarea cols="70">Page Title</textarea>
@@ -135,6 +135,7 @@ $(document).ready(function(){
 						{% else %}
 							<li class="custom_element" id="formitem-image-{{ element.id }}">
 								<input type="file" />
+								<img src="/uploads/{{ element.image }}">
 								<span class="remove_element">
 							</li>
 						{% endif %}

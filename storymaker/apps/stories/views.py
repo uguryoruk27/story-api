@@ -73,39 +73,50 @@ def edit_page(request, pk, template="pages/edit.html"):
 
     if request.method == "POST":
 
-        # get and prepare all the elements
-
+        # handle text
         for k, v in request.POST.dict().items():
 
             if k.startswith("formitem"):
+                
                 vals = k.split("-")
                 item_type, item_id, item_is_new, item_order = vals[1], vals[2], (vals[2] == "0"), vals[3]
-                
-                if item_is_new:
-                    if item_type == "image":
-                        pass
-                    else:
-                        e = ElementNode()
-                        e.content = v
-                        e.pagenode_id = page.id
-                        e.type = item_type
-                        e.ordering = int(item_order)
-                        e.save()
 
+                if item_is_new:
+                    e = ElementNode()
+                    e.content = v
+                    e.pagenode_id = page.id
+                    e.type = item_type
+                    e.ordering = int(item_order)
+                    e.save()
                 else:
                     element = get_element(item_id)
 
                     if element:
-                        if element.type == "text":
-                            element.content = v
-                            element.ordering = int(item_order)
-                            element.save()
+                        element.content = v
+                        element.ordering = int(item_order)
+                        element.save()
                     else:
                         print "no such element"
 
-        #raise Exception(request.POST.dict())
+        # handle images
+        for k, v in request.FILES.dict().items():
+            print k, " --- ", v
+            if k.startswith("formitem"):
+                vals = k.split("-")
+                item_type, item_id, item_is_new, item_order = vals[1], vals[2], (vals[2] == "0"), vals[3]
 
-
+                if item_is_new:
+                    e = ElementNode()
+                    e.pagenode_id = page.id
+                    e.type = item_type
+                    e.ordering = int(item_order)
+                    e.save()
+                    e.image.save(v.name, v)
+                else:
+                    e = get_element(item_id)
+                    e.image.save(v.name, v)
+                    e.ordering = item_order
+                    e.save()
 
 
     ctx = {
