@@ -41,6 +41,9 @@ class ElementNode(models.Model):
 	image = models.ImageField(_("Element Image"), upload_to="elements/images/", null=True, blank=True)
 	content = models.CharField(_("Content"), max_length=500, null=True, blank=True)
 
+	class Meta:
+		ordering = ("ordering", )
+
 	def __unicode__(self):
 		return u"%s - element" % self.pagenode.title
 

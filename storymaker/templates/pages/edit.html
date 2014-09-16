@@ -11,10 +11,12 @@ $(document).ready(function(){
 	var imageElement = '<input type="file" value="Upload an image" />';
 	var textElement = '<textarea>Text</textarea>';
     
-	var startTextElement = '<li class="custom_element" id="formitem-text">';
-	var startImageElement = '<li class="custom_element" id="formitem-image">';
+	var startTextElement = '<li class="custom_element" id="formitem-text-0">';
+	var startImageElement = '<li class="custom_element" id="formitem-image-0">';
 
 	var endElement = '<span class="remove_element"></li>';
+
+	$(".user_defined_fields").sortable();
 
 	// add new element
 	$(".addText").click(function(){
@@ -48,13 +50,15 @@ $(document).ready(function(){
 
 			var item_to_find;
 
-			if (li_id == "formitem-text"){
+			if (li_id.search("text") != -1){
 				item_to_find = "textarea";
-			} else if (li_id == "formitem-image"){
+			} else if (li_id.search("formitem-image") != -1){
 				item_to_find = "input";
 			};
 
 			$(this).find(item_to_find).attr("name", name_val);
+
+			$(".main-form").submit();
 		});
 	});
 
@@ -111,7 +115,7 @@ $(document).ready(function(){
 
 		</div>
 
-		<form action="" method="POST">{% csrf_token %}
+		<form action="" method="POST" class="main-form">{% csrf_token %}
 
 			<!-- START default editable fields -->
 			<textarea cols="70">Page Title</textarea>
@@ -124,9 +128,15 @@ $(document).ready(function(){
 
 					{% for element in page.elements.all %}
 						{% if element.type == "text" %}
-							<li class="custom_element" id="formitem-text"><textarea>{{ element.content }}</textarea><span class="remove_element"></li>
+							<li class="custom_element" id="formitem-text-{{ element.id }}">
+								<textarea>{{ element.content }}</textarea>
+								<span class="remove_element">
+							</li>
 						{% else %}
-							<li class="custom_element" id="formitem-text"><input type="file" /><span class="remove_element"></li>
+							<li class="custom_element" id="formitem-image-{{ element.id }}">
+								<input type="file" />
+								<span class="remove_element">
+							</li>
 						{% endif %}
 					{% endfor %}
 
@@ -135,9 +145,7 @@ $(document).ready(function(){
 			</div>
 			<!-- END user defined editable fields -->
 
-			<span class="submitting">POST TEST</span>
-
-			<input type="submit" value="Save Page" class="submit_button" />
+			<span class="submitting">SAVE</span>
 
 		</form>
 

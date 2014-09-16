@@ -9,7 +9,7 @@ from django.utils.decorators import method_decorator
 from django.template import RequestContext
 
 from apps.stories.forms import CreateStoryForm, CreatePageForm
-from apps.stories.models import Story, PageNode
+from apps.stories.models import Story, PageNode, ElementNode
 
 
 
@@ -61,6 +61,7 @@ class PageDetails(DetailView):
     slug_field = "slug"
 
 
+
 ITEMS = ()
 
 def edit_page(request, pk, template="pages/edit.html"):
@@ -68,15 +69,41 @@ def edit_page(request, pk, template="pages/edit.html"):
     try:
         page = PageNode.objects.get(pk=pk)
     except:
-        page = None
-
-    if not page:
         raise Http404("No such page.")
 
     if request.method == "POST":
 
+        # get and prepare all the elements
 
-        raise Exception(request.POST)
+        for k, v in request.POST.dict().items():
+
+            if k.startswith("formitem"):
+                vals = k.split("-")
+                item_type, item_id, item_is_new, item_order = vals[1], vals[2], (vals[2] == "0"), vals[3]
+                
+                if item_is_new:
+                    if item_type == "image":
+                        pass
+                    else:
+                        e = ElementNode()
+                        e.content = v
+                        e.pagenode_id = page.id
+                        e.type = item_type
+                        e.ordering = int(item_order)
+                        e.save()
+
+                else:
+                    element = get_element(item_id)
+
+                    if element:
+                        if element.type == "text":
+                            element.content = v
+                            element.ordering = int(item_order)
+                            element.save()
+                    else:
+                        print "no such element"
+
+        #raise Exception(request.POST.dict())
 
 
 
@@ -90,3 +117,9 @@ def edit_page(request, pk, template="pages/edit.html"):
 
 
 
+def get_element(id):
+
+    try:
+        return ElementNode.objects.get(id=id)
+    except:
+        return None
