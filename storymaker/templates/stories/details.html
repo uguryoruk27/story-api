@@ -3,12 +3,12 @@
 
 {% block Content %}
 
-	<div class="title">{{ object.title }}</div>
+	<div class="title">{{ object.title }}<a href="{% url 'run_story' object.id 0 %}" class="run-story">Çalıştır</a></div>
 
 	<div class="content">
 
 		<div class="story-details">
-			Story details goes here....
+			<img src="/uploads/{{ object.image }}" size="200" />
 		</div>
 
 		<div class="sub-title"><span>Sayfalar</span></div>

@@ -84,6 +84,7 @@ class CreatePage(CreateView):
 
 ITEMS = ()
 
+@login_required
 def edit_page(request, pk, template="pages/edit.html"):
 
     try:
@@ -137,6 +138,42 @@ def edit_page(request, pk, template="pages/edit.html"):
                     e.image.save(v.name, v)
                     e.ordering = item_order
                     e.save()
+
+
+    ctx = {
+        "page" : page,
+    }
+
+    return render_to_response(template, ctx, context_instance=RequestContext(request))
+
+@login_required
+def run_story(request, story_id, page_id, template="stories/player.html"):
+
+
+    try:
+        story = Story.objects.get(id=story_id)
+    except:
+        story = None
+        raise Http404(u"Hikaye bulunamadi")
+
+    if int(page_id) == 0:
+
+        try:
+            page = story.pages.order_by("id")[0]
+        except:
+            page = None
+            raise Http404(u"Hikayeye ait hic bir sayfa yok")
+
+        return redirect(
+            reverse(
+                "run_story", 
+                kwargs={"story_id": story_id, "page_id" : page.id}
+            )
+        )
+
+    else:
+        page = PageNode.objects.get(id=page_id)
+
 
 
     ctx = {

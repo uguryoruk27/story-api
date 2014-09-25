@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+
+{% block Content %}
+
+	<div class="run-story-base">
+
+		<div class="run-story-item title">{{ page.title }}</div>
+
+		{% for element in page.elements.all %}
+			{% if element.type == "image" %}
+				<div class="run-story-item">
+					<img src="/uploads/{{ element.image}}" size="200" />
+				</div>
+			{% else %}
+				<div class="run-story-item">
+					{{ element.content }}
+				</div>
+			{% endif %}
+		{% endfor %}
+
+		{% for link in page.links.all %}
+			<div class="run-story-item link">
+				<a href="{% url 'run_story' page.story.id link.linked_pagenode.id %}">{{ link.content }}</a>
+			</div>
+		{% endfor %}
+
+	</div>
+
+{% endblock %}
