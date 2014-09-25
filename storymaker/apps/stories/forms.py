@@ -56,7 +56,7 @@ class CreateStoryForm(forms.ModelForm):
 
     class Meta:
         model = Story
-        fields = ("title",)
+        fields = ("title", "image",)
 
 
 class CreatePageForm(forms.ModelForm):

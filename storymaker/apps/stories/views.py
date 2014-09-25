@@ -62,6 +62,26 @@ class PageDetails(DetailView):
 
 
 
+class CreatePage(CreateView):
+    template_name = "pages/create.html"
+    model = PageNode
+    form_class = CreatePageForm
+
+    def get_success_url(self):
+        return reverse("story_details", kwargs={"pk": self.kwargs["pk"]})
+
+    def form_valid(self, form):
+        self.object = form.instance
+        # started by
+        self.object.story_id = int(self.kwargs["pk"])
+        self.object.save()
+        return super(CreatePage, self).form_valid(form)
+
+    @method_decorator(login_required())
+    def dispatch(self, *args, **kwargs):
+        return super(CreatePage, self).dispatch(*args, **kwargs)
+
+
 ITEMS = ()
 
 def edit_page(request, pk, template="pages/edit.html"):
